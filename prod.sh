@@ -30,6 +30,7 @@ EC='\033[0m' # End cyan.
 # Source the production credentials file.
 
 source ./creds/heroku_prod.sh
+source ./creds/gcloud.sh
 
 # Make sure all necessary variables are set.
 
@@ -67,7 +68,7 @@ source ./creds/gcloud.sh
 
 # Make sure Google Cloud variabble set.
 
-if [ -z "$GCLOUD_BUCKET" ] || [ -z "$GCLOUD_PROJECT" ] || [ -z "$GCLOUD_CLIENT_ID" ] || [ -z "$GCLOUD_CLIENT_EMAIL" ] || [ -z "$GCLOUD_PK_ID" ] || [ -z "$GCLOUD_PK" ]; then
+if [ -z "$GCLOUD_BUCKET" ] || [ -z "$GCLOUD_PROJECT" ] || [ -z "$GCLOUD_CLIENT_ID" ] || [ -z "$GCLOUD_CLIENT_EMAIL" ] || [ -z "$GCLOUD_PK_ID" ] || [ -z "$GCLOUD_PK_B64" ]; then
 	echo "\n${SR}Error:${ER} ${SC}Google Cloud credentials are required to deploy to production.\n${EC}"
 	echo "${SR}Aborting...\n${ER}"
  	exit 1
