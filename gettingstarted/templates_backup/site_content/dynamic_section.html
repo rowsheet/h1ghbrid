@@ -1,0 +1,28 @@
+{% extends "site_content/base_page.html" %}
+
+{% block custom_links %}
+<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/carousel/carousel.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block custom_scripts %}
+<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/carousel/carousel.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block page_content %}
+<div class="container">
+	<br>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<h5>Dynamic Section: {{ info | safe }}</h5>
+				<ul>
+					<li>Title: <code>{{ section.title }}</code></li>
+					<li>Creation Timestamp: <code>{{ section.creation_timestamp }}</code></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+{{ html | safe }}
+{% endblock %}

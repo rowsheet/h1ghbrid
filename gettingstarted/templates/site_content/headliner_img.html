@@ -1,0 +1,42 @@
+<style>
+img.featurette-image.img-fluid.mx-auto {
+	box-shadow: -5px 8px 18px 12px #0000007a;
+	border-radius: 24px;
+	object-fit: cover;
+	object-position: center;
+	position: absolute;
+	margin-top: -10vh;
+	height: 63vh;
+}
+main {
+	overflow: hidden;
+	transform: translateZ(-20px) scale(1);
+}
+img.slider_headliner {
+	opacity: 0.7;
+}
+.row.flex-row.flex-nowrap {
+	scrollbar-width: none !important;
+}
+</style>
+<div class="container">
+	<div class="row featurette">
+		{% if data.align == "text-left" %}
+		<div class="col-md-7" style="z-index: 1; margin-bottom: 87px;">
+			<h2 class="featurette-heading">{{ data.title }} <span class="text-muted">{{ data.title_2 }}</span></h2>
+			<p class="lead">{{ data.text | safe }}</p>
+		</div>
+		<div class="col-md-5">
+			<img class="slider_headliner featurette-image img-fluid mx-auto" src="{{ data.img_src.gcloud_img_src }}" style="width: 50vw !important;position: fixed;">
+		</div>
+		{% else %}
+		<div class="col-md-5">
+			<img class="slider_headliner featurette-image img-fluid mx-auto" src="{{ data.img_src.gcloud_img_src }}" style="    width: 47vw !important; position: fixed; margin-left: -19vw !important; margin-top: 10px;">
+		</div>
+		<div class="col-md-7" style="z-index: 1; margin-bottom: 87px;">
+			<h2 class="featurette-heading">{{ data.title }} <span class="text-muted">{{ data.title_2 }}</span></h2>
+			<p class="lead">{{ data.text | safe }}</p>
+		</div>
+		{% endif %}
+	</div>
+</div>

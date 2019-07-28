@@ -1,0 +1,92 @@
+{% extends "site_content/base_page.html" %}
+
+{% block custom_links %}
+<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/carousel/carousel.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block custom_scripts %}
+<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/carousel/carousel.css" crossorigin="anonymous">
+{% endblock %}
+
+
+{% block page_content %}
+{{ html | safe }}
+<style>
+.full-img-col {
+    padding: 0px;
+}
+.full-img-col img {
+    height: 45vh;
+}
+.full-img-container {
+	position: relative;
+}
+.full-img-cover:hover {
+    border: 20px solid white;
+    background: #0007;
+    transition: all 0.5s ease;
+    opacity: 1;
+    color: white;
+    text-shadow: 0px 0px 5px #0009;
+    font-weight: 100;
+}
+.full-img-cover {
+    color: #fff0;
+    opacity: 0;
+    border: 0px solid white;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: calc(45vh - 0px);
+    width: calc(100% - 0px);
+    transition: all 0.5s;
+}
+body {
+	background-image: linear-gradient(135deg, #8ae977 0%, #bb95c4 100%);
+	background-attachment: fixed;
+}
+* {
+	color: white;
+	font-weight: 100;
+}
+p {
+	font-weight: 100 !important;
+}
+.btn.btn-secondary {
+    background: none;
+    border: 1px solid white;
+}
+a.btn.btn-secondary {
+	font-weight: 100 !important;
+}
+a.btn.btn-secondary:hover {
+    background: #4CAF50;
+    box-shadow: 0px 7px 15px #458448;
+    transition: 0.5s;
+    border: 1px solid #4CAF50;
+}
+body {
+	margin-top: 0px !important;
+}
+</style>
+<div class="container-fluid">
+	<div class="row">
+		{% for i in i|rjust:12 %}
+		<div class="col-lg-3 col-md-4 col-sm-6 full-img-col">
+			<div class="full-img-container">
+				<img class="full-img" src="https://source.unsplash.com/random" style="object-fit: cover; object-position: center; width: 100%;">
+				<div class="full-img-cover">
+					<div class="text-center">
+<p>Durban Poison</p>
+<p>Indica</p>
+<p>$45/gram</p>
+<p>$3 joins</p>
+<p>$200/oz</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+<div class="container-fluid" style="
+padding-bottom: 200px;
+    padding-top: 132px;
+    margin-top: -187px;
+    margin-bottom: -274px;
+">
+	<div class="row" style="
+    margin-top: -100px;
+	">
+<div class="clip" style="
+    background: linear-gradient(45deg, #ffc107 0%, #8ae977 100%);
+    height: 500px;
+    width: 100%;
+    position: absolute;
+    margin-top: -5px;
+    clip-path: polygon(100% 18%, 0 0, 0 98%, 100% 76%);
+"></div>
+		<div class="col-lg-4 text-center">
+			<img class="rounded-circle" src="{{ data.img_src_1.gcloud_img_src }}" width="140" height="140" style="object-fit: cover;">
+			<h2>{{ data.title_1 }}</h2>
+			<p>{{ data.text_1 | safe }}</p>
+			{% if data.button_title_1 is not None %}
+			<p><a class="btn btn-secondary" href="{{ data.button_link_1 }}" role="button">{{ data.button_title_1}}</a></p>
+			{% endif %}
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4 text-center">
+			<img class="rounded-circle" src="{{ data.img_src_2.gcloud_img_src }}" width="140" height="140" style="object-fit: cover;">
+			<h2>{{ data.title_2 }}</h2>
+			<p>{{ data.text_2 | safe }}</p>
+			{% if data.button_title_2 is not None %}
+			<p><a class="btn btn-secondary" href="{{ data.button_link_2 }}" role="button">{{ data.button_title_2 }}</a></p>
+			{% endif %}
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4 text-center">
+			<img class="rounded-circle" src="{{ data.img_src_3.gcloud_img_src }}" width="140" height="140" style="object-fit: cover;">
+			<h2>{{ data.title_3 }}</h2>
+			<p>{{ data.text_3 | safe }}</p>
+			{% if data.button_title_3 is not None %}
+			<p><a class="btn btn-secondary" href="{{ data.button_link_3 }}" role="button">{{ data.button_title_3 }}</a></p>
+			{% endif %}
+		</div><!-- /.col-lg-4 -->
+	</div><!-- /.row -->
+</div><!-- /.container -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

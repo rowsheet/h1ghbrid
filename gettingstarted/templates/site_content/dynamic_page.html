@@ -1,0 +1,583 @@
+{% spaceless %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=500" />
+	<meta name="keywords" content="nullhorizon.com, Null Horizon, continuous-integration" />
+	<meta name="author"	content="Null Horizon (www.nullhorizon.com)" />
+	<title>NULL HORIZON</title>
+
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic|Josefin+Slab:400,700italic' rel='stylesheet' type='text/css'>
+	<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:100,200,300,400,500,600,700,900" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Neuton:200,300,400" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Arapey" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Cormorant" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://storage.googleapis.com/nullhorizon_landing/public/css/blog.css" type="text/css">
+	<link rel="stylesheet" href="https://storage.googleapis.com/nullhorizon_landing/public/css/album.css" type="text/css">
+	<link rel="stylesheet" href="https://storage.googleapis.com/nullhorizon_landing/public/css/pricing.css" type="text/css">
+	<link rel="stylesheet" href="https://storage.googleapis.com/nullhorizon_landing/public/css/temp.css" type="text/css">
+	<link rel="stylesheet" href="https://storage.googleapis.com/nullhorizon_landing/public/css/hamburger.css" type="text/css">
+
+	<link rel="stylesheet" href="https://storage.googleapis.com/nullhorizon_landing/public/css/dashboard.css" type="text/css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.6/holder.min.js"></script>
+	<script type="text/javascript" src="https://storage.googleapis.com/nullhorizon_landing/public/js/lib/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://storage.googleapis.com/nullhorizon_landing/public/js/lib/greensock/TweenMax.min.js"></script>
+	<script type="text/javascript" src="https://storage.googleapis.com/nullhorizon_landing/public/scrollmagic/uncompressed/ScrollMagic.js"></script>
+	<script type="text/javascript" src="https://storage.googleapis.com/nullhorizon_landing/public/scrollmagic/uncompressed/plugins/animation.gsap.js"></script>
+
+	<script type="text/javascript" src="https://storage.googleapis.com/nullhorizon_landing/public/js/holder.min.js"></script>
+	<script>{{ leading_script | safe }}</script>
+	<style>{{ leading_style | safe }}</style>
+<style>
+p {
+	color: #fff;
+	font-family: Avenir Next, Helvetica Neue, Helvetica, Tahoma, sans-serif;
+	font-size: 1em;
+	font-weight: 700;
+}
+p span {
+	display: inline-block;
+	position: relative;
+	-webkit-transform-style: preserve-3d;
+					transform-style: preserve-3d;
+	-webkit-perspective: 500;
+					perspective: 500;
+	-webkit-font-smoothing: antialiased;
+}
+p span::before,
+p span::after {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: -1px;
+	-webkit-transform-origin: left top;
+					transform-origin: left top;
+	transition: all ease-out 0.3s;
+	content: attr(data-text);
+}
+p span::before {
+	z-index: 1;
+	color: rgba(0,0,0,0.2);
+	-webkit-transform: scale(1.1, 1) skew(0deg, 20deg);
+					transform: scale(1.1, 1) skew(0deg, 20deg);
+}
+p span::after {
+	z-index: 2;
+	color: #684da3;
+	text-shadow: -1px 0 1px #684da3, 1px 0 1px rgba(0,0,0,0.8);
+	-webkit-transform: rotateY(-40deg);
+					transform: rotateY(-40deg);
+}
+p span:hover::before {
+	-webkit-transform: scale(1.1, 1) skew(0deg, 5deg);
+					transform: scale(1.1, 1) skew(0deg, 5deg);
+}
+p span:hover::after {
+	-webkit-transform: rotateY(-10deg);
+					transform: rotateY(-10deg);
+}
+p span + span {
+	margin-left: 0.3em;
+}
+@media (min-width: 20em) {
+	p {
+		font-size: 2em;
+	}
+	p span::before,
+	p span::after {
+		display: block;
+	}
+}
+@media (min-width: 30em) {
+	p {
+		font-size: 3em;
+	}
+}
+@media (min-width: 40em) {
+	p {
+		font-size: 5em;
+	}
+}
+@media (min-width: 60em) {
+	p {
+		font-size: 8em;
+	}
+}
+.Words {
+		font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+		font-size: 8px;
+		text-transform: uppercase;
+		-webkit-font-kerning: normal;
+}
+.Words-line {
+	height: 50px;
+	overflow: hidden;
+	position: relative;
+}
+.Words-line:nth-child(odd) {
+	-webkit-transform: skew(60deg, -30deg) scaleY(0.66667);
+					transform: skew(60deg, -30deg) scaleY(0.66667);
+}
+.Words-line:nth-child(even) {
+	-webkit-transform: skew(0deg, -30deg) scaleY(1.33333);
+					transform: skew(0deg, -30deg) scaleY(1.33333);
+}
+.Words-line:nth-child(1) {
+	left: 29px;
+}
+.Words-line:nth-child(2) {
+	left: 58px;
+}
+.Words-line:nth-child(3) {
+	left: 87px;
+}
+.Words-line:nth-child(4) {
+	left: 116px;
+}
+.Words-line:nth-child(5) {
+	left: 145px;
+}
+.Words-line:nth-child(6) {
+	left: 174px;
+}
+.Words-line:nth-child(7) {
+	left: 203px;
+}
+p {
+	height: 50px;
+	line-height: 45px;
+	transition: all .4s ease-in-out;
+	vertical-align: top;
+	white-space: nowrap;
+}
+.Words:hover p {
+	-webkit-transform: translate3d(0, -50px, 0);
+					transform: translate3d(0, -50px, 0);
+}
+li.Words-line p {
+		margin-bottom: 0px;
+}
+
+li.Words-line p {
+		font-size: 7em !important;
+}
+a.bi_data {
+	cursor: pointer;
+	font-family: 'Roboto Mono', monospace;
+	-webkit-user-select: none;
+		 -moz-user-select: none;
+			-ms-user-select: none;
+					user-select: none;
+	color: aqua;
+	font-size: 0;
+	-webkit-transform: translate3d(0, 0, 0);
+					transform: translate3d(0, 0, 0);
+	-webkit-filter: blur(0);
+					filter: blur(0);
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+}
+a.bi_data span {
+	font-size: 40px;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	position: relative;
+	transition: -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 250ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 250ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 250ms, -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 250ms;
+	padding: 0 0.1em;
+}
+a.bi_data span:nth-child(0n) {
+	transition-delay: 0ms;
+}
+a.bi_data span:nth-child(0n):after {
+	transition-delay: 0ms;
+}
+a.bi_data span:nth-child(1n) {
+	transition-delay: 83.3333333333ms;
+}
+a.bi_data span:nth-child(1n):after {
+	transition-delay: 83.3333333333ms;
+}
+a.bi_data span:nth-child(2n) {
+	transition-delay: 166.6666666667ms;
+}
+a.bi_data span:nth-child(2n):after {
+	transition-delay: 166.6666666667ms;
+}
+a.bi_data span:nth-child(3n) {
+	transition-delay: 250ms;
+}
+a.bi_data span:nth-child(3n):after {
+	transition-delay: 250ms;
+}
+a.bi_data span:after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: -1%;
+	width: 102%;
+	height: 2em;
+	background: #007bff;
+	-webkit-transform-origin: top center;
+					transform-origin: top center;
+	-webkit-transform: scaley(0.1);
+					transform: scaley(0.1);
+	transition: -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 250ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 250ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 250ms, -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 250ms;
+}
+a.bi_data:hover span {
+	-webkit-transform: translateY(-1em);
+					transform: translateY(-1em);
+}
+a.bi_data:hover span:after {
+	-webkit-transform: scaleY(1);
+					transform: scaleY(1);
+}
+a.bi_data:active span {
+	-webkit-transform: translateY(0);
+					transform: translateY(0);
+	transition: -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 125ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 125ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 125ms, -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 125ms;
+	transition-delay: 0 !important;
+}
+a.bi_data:active span:after {
+	-webkit-transform: scaleY(0.5);
+					transform: scaleY(0.5);
+	transition: -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 125ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 125ms;
+	transition: transform cubic-bezier(0.77, 0, 0.175, 1) 125ms, -webkit-transform cubic-bezier(0.77, 0, 0.175, 1) 125ms;
+	transition-delay: 0 !important;
+}
+.overlay-content {
+		padding-top: 16vh;
+}
+p#platform_solutions {
+		font-size: 52px;
+}
+div#unconventional_dev {
+		color: white;
+		font-family: 'Roboto Mono', monospace;
+		font-size: 13px;
+		background: #00000038;
+		font-weight: 100;
+	text-align: left;
+}
+h1.menu_label {
+		color: white;
+		font-family: "Neuton", serif;
+		font-weight: 100;
+		font-size: 30px;
+}
+div#menu_2 {
+		text-align: right;
+}
+div#unconventional_dev .text {
+		margin-top: -19px !important;
+		margin-left: 469px;
+}
+h1.menu_sub_label {
+		color: #ffffff8f;
+		font-family: "Neuton", serif;
+		font-weight: 100;
+		font-size: 20px;
+		line-height: 21px;
+		text-align: left;
+}
+div#platform_services_wrapper * {
+		text-align: left;
+}
+div#unconventional_wrapper * {
+		text-align: left;
+}
+.Words .Words-line {
+		text-align: left;
+}
+a.bi_data {
+		margin-top: -25px;
+		text-align: left;
+}
+a.bi_data * {
+		font-size: 19px !important;
+		font-weight: 100;
+		color: white;
+}
+p span::after {
+		color: #007bff;
+		text-shadow: none;
+}
+p#platform_solutions * {
+		font-size: 26px;
+		margin-bottom: -30px !important;
+}
+p#platform_solutions * {
+		font-size: 26px;
+		margin-bottom: -30px !important;
+}
+p#platform_solutions {
+		margin-left: 11px;
+}
+ul.Words {
+		margin-top: -150px;
+		margin-bottom: 50px;
+}
+li.Words-line {
+		margin-left: -100px;
+}
+a.nav_3d {
+	color: white !important;
+}
+a.nav_3d:hover {
+	color: #007bff !important;
+}
+</style>
+</head>
+<body class="start">
+	<nav class="navbar fixed-top justify-content-between">
+		<div class="container">
+			<a class="navbar-brand" href="#" id="logo">
+				<img src="https://storage.googleapis.com/nullhorizon_landing/public/new_landing/logo_white.png"/>
+			</a>
+			<form class="form-inline">
+				<div id='myNav' class='overlay' onclick='closeNav()'>
+					<div class='overlay-content'>
+						<div class="container">
+							<div class="row">
+								<div class="col-md-6" id="platform_services_wrapper">
+									<div id="menu_2" class="menu_layer">
+										<h1 class="menu_label">Professional & Development Services:</h1>
+										<h1 class="menu_sub_label">&nbsp&nbsp&nbspCustom requirments, custom deadlines, platform/language/DSL agnostic.</h1>
+										<a class="bi_data">
+											<span>D</span>
+											<span>E</span>
+											<span>V</span>
+											<span>O</span>
+											<span>P</span>
+											<span>S</span>
+											<span>/</span>
+											<span>C</span>
+											<span>L</span>
+											<span>O</span>
+											<span>U</span>
+											<span>D</span>
+											<span>/</span>
+											<span>C</span>
+											<span>I</span>
+										</a>
+										<a class="bi_data">
+											<span>D</span>
+											<span>A</span>
+											<span>T</span>
+											<span>A</span>
+											<span>/</span>
+											<span>A</span>
+											<span>U</span>
+											<span>T</span>
+											<span>O</span>
+											<span>M</span>
+											<span>A</span>
+											<span>T</span>
+											<span>I</span>
+											<span>O</span>
+											<span>N</span>
+											<span>/</span>
+											<span>B</span>
+											<span>I</span>
+										</a>
+										<a class="bi_data">
+											<span>M</span>
+											<span>O</span>
+											<span>B</span>
+											<span>I</span>
+											<span>L</span>
+											<span>E</span>
+											<span>/</span>
+											<span>W</span>
+											<span>E</span>
+											<span>B</span>
+											<span>/</span>
+											<span>U</span>
+											<span>X</span>
+										</a>
+										<h1 class="menu_label" style="margin-top: 19px;">Platform Solutions:</h1>
+										<h1 class="menu_sub_label">&nbsp&nbsp&nbspTurn-key, pre-built, ready to deploy.</h1>
+										<a class="bi_data">
+											<span>I</span>
+											<span>N</span>
+											<span>V</span>
+											<span>E</span>
+											<span>N</span>
+											<span>T</span>
+											<span>O</span>
+											<span>R</span>
+											<span>Y</span>
+											<span>-</span>
+											<span>M</span>
+											<span>A</span>
+											<span>N</span>
+											<span>A</span>
+											<span>G</span>
+											<span>E</span>
+											<span>M</span>
+											<span>E</span>
+											<span>N</span>
+											<span>T</span>
+										</a>
+										<a class="bi_data">
+											<span>E</span>
+											<span>-</span>
+											<span>C</span>
+											<span>O</span>
+											<span>M</span>
+											<span>M</span>
+											<span>E</span>
+											<span>R</span>
+											<span>C</span>
+											<span>E</span>
+											<span>/</span>
+											<span>P</span>
+											<span>O</span>
+											<span>S</span>
+										</a>
+										<a class="bi_data">
+											<span>W</span>
+											<span>O</span>
+											<span>R</span>
+											<span>K</span>
+											<span>F</span>
+											<span>O</span>
+											<span>R</span>
+											<span>C</span>
+											<span>E</span>
+											<span>-</span>
+											<span>M</span>
+											<span>A</span>
+											<span>N</span>
+											<span>A</span>
+											<span>G</span>
+											<span>E</span>
+											<span>M</span>
+											<span>E</span>
+											<span>N</span>
+											<span>T</span>
+										</a>
+										<a class="bi_data">
+											<span>C</span>
+											<span>U</span>
+											<span>S</span>
+											<span>T</span>
+											<span>O</span>
+											<span>M</span>
+											<span>E</span>
+											<span>R</span>
+											<span>-</span>
+											<span>E</span>
+											<span>N</span>
+											<span>G</span>
+											<span>A</span>
+											<span>G</span>
+											<span>E</span>
+											<span>M</span>
+											<span>E</span>
+											<span>N</span>
+											<span>T</span>
+										</a>
+									</div>
+								</div>
+								<div class="col-md-6" id="about_wrapper">
+									<div id="menu_1" class="menu_layer">
+										<ul class="Words">
+											<li class="Words-line">
+												<p><a href="google.com" class="nav_3d">&nbsp;</a></p>
+												<p><a href="google.com" class="nav_3d">&nbsp;</a></p>
+											</li>
+											<li class="Words-line">
+												<p><a href="google.com" class="nav_3d">&nbsp;</a></p>
+												<p><a href="google.com" class="nav_3d">1. Our Team</a></p>
+											</li>
+											<li class="Words-line">
+												<p><a href="google.com" class="nav_3d">1. Our Team</a></p>
+												<p><a href="google.com" class="nav_3d">2. Experience</a></p>
+											</li>
+											<li class="Words-line">
+												<p><a href="google.com" class="nav_3d">2. Experience</a></p>
+												<p><a href="google.com" class="nav_3d">3. News & Blog</a></p>
+											</li>
+											<li class="Words-line">
+												<p><a href="google.com" class="nav_3d">3. News & Blog</a></p>
+												<p><a href="google.com" class="nav_3d">4. Social</a></p>
+											</li>
+											<li class="Words-line">
+												<p><a href="google.com" class="nav_3d">4. Social</a></p>
+												<p><a href="google.com" class="nav_3d">5. Contact Us</a></p>
+											</li>
+											<li class="Words-line">
+												<p><a href="google.com" class="nav_3d">5. Contact Us</a></p>
+												<p><a href="google.com" class="nav_3d">&nbsp;</a></p>
+											</li>
+										</ul>
+										<br>
+										<br>
+										<br>
+										<br>
+										<br>
+										<h1 class="menu_label" style="text-align: left;">Unconventional Projects:</h1>
+										<h1 class="menu_sub_label">&nbsp&nbsp&nbspUnusual, uncharted, undefined and dead-line constrained.</h1>
+										<a class="bi_data">
+											<span>L</span>
+											<span>E</span>
+											<span>A</span>
+											<span>R</span>
+											<span>N</span>
+											<span>&nbsp</span>
+											<span>M</span>
+											<span>O</span>
+											<span>R</span>
+											<span>E</span>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id='ham_open' class='hamburger hamburger--emphatic open_nav'>
+					<span class='hamburger-box'>
+						<span class='hamburger-inner'></span>
+					</span>
+				</div>
+			</form>
+		</div>
+	</nav>
+	<div id="content-wrapper">
+		<div id="example-wrapper">
+			<div class="scrollContent" style="height: 99% !important;">
+				<section class="demo" id="section-wipes">
+					<div id="trigger1" class="spacer s0">
+					</div>
+					<div id="pinContainer" style="background-image: url(https://storage.googleapis.com/nullhorizon_landing/public/new_landing/nullhorizon.jpg);background-size: cover;background-position: center;">
+{{ html | safe }}
+					</div>
+					<div style="position: fixed; top: 0px; pointer-events: none;" id="msg_div">
+{{ aux_custom_template | safe }}
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</body>
+<style>{{ trailing_style | safe }}</style>
+<script>{{ trailing_script | safe }}</script>
+</html>
+{% endspaceless %}

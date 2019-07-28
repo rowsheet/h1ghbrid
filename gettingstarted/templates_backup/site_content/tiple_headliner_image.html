@@ -1,0 +1,28 @@
+<div class="container">
+	<div class="row">
+		<div class="col-lg-4 text-center">
+			<img class="rounded-circle" src="{{ data.img_src_1 }}" width="140" height="140" style="object-fit: cover;">
+			<h2>{{ data.title_1 }}</h2>
+			<p>{{ data.text_1 }}</p>
+			{% if data.button_title_1 is not None %}
+			<p><a class="btn btn-secondary" href="{{ data.button_link_1 }}" role="button">{{ data.button_title_1}}</a></p>
+			{% endif %}
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4 text-center">
+			<img class="rounded-circle" src="{{ data.img_src_2 }}" width="140" height="140" style="object-fit: cover;">
+			<h2>{{ data.title_2 }}</h2>
+			<p>{{ data.text_2 }}</p>
+			{% if data.button_title_2 is not None %}
+			<p><a class="btn btn-secondary" href="{{ data.button_link_2 }}" role="button">{{ data.button_title_2 }}</a></p>
+			{% endif %}
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4 text-center">
+			<img class="rounded-circle" src="{{ data.img_src_3 }}" width="140" height="140" style="object-fit: cover;">
+			<h2>{{ data.title_3 }}</h2>
+			<p>{{ data.text_3 }}</p>
+			{% if data.button_title_3 is not None %}
+			<p><a class="btn btn-secondary" href="{{ data.button_link_3 }}" role="button">{{ data.button_title_3 }}</a></p>
+			{% endif %}
+		</div><!-- /.col-lg-4 -->
+	</div><!-- /.row -->
+</div><!-- /.container -->

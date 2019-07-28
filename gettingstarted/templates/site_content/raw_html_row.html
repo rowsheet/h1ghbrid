@@ -1,0 +1,48 @@
+<div class="container">
+{% if data.row_type == "full" %}
+	<div class="row">
+		<div class="col-md-12">
+		{{ data.col_1_html | safe }}
+		</div>
+	</div>
+{% elif data.row_type == "halves" %}
+	<div class="row">
+		<div class="col-md-6">
+		{{ data.col_1_html | safe }}
+		</div>
+		<div class="col-md-6">
+		{{ data.col_2_html | safe }}
+		</div>
+	</div>
+{% elif data.row_type == "thirds" %}
+	<div class="row">
+		<div class="col-md-4">
+		{{ data.col_1_html | safe }}
+		</div>
+		<div class="col-md-4">
+		{{ data.col_2_html | safe }}
+		</div>
+		<div class="col-md-4">
+		{{ data.col_3_html | safe }}
+		</div>
+	</div>
+{% elif data.row_type == "thirds_large_left" %}
+	<div class="row">
+		<div class="col-md-8">
+		{{ data.col_1_html | safe }}
+		</div>
+		<div class="col-md-4">
+		{{ data.col_2_html | safe }}
+		</div>
+	</div>
+{% elif data.row_type == "thirds_large_right" %}
+	<div class="row">
+		<div class="col-md-4">
+		{{ data.col_1_html | safe }}
+		</div>
+		<div class="col-md-8">
+		{{ data.col_2_html | safe }}
+		</div>
+	</div>
+{% endif %}
+</div>

@@ -1,0 +1,584 @@
+{% load i18n static %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
+{% block extrahead %}{% endblock %}
+{% block responsive %}
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
+{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,600,700,800" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Cutive+Mono" rel="stylesheet"> 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<style>
+#sidebar {
+	display: none;
+}
+@media (min-width: 767px) {
+	.dashboard #content {
+		width: calc(100% - 400px);
+	}
+}
+div#header {
+	background: #1e1e2e;
+}
+div#sidebar {
+	position: fixed;
+	height: 100vh;
+	width: 260px;
+	background: #1e1e2e;
+	z-index: 1;
+	margin-top: 50px;
+	margin-left: -260px;
+}
+div.breadcrumbs {
+	background: #1e1e2e !important;
+	position: fixed;
+	width: 100%;
+	margin-top: 50px;
+	z-index: 1;
+}
+div#user-tools {
+	margin-right: 93px;
+}
+div#content {
+	padding-top: 65px;
+}
+.login div#content {
+    margin-top: 150px;
+}
+.login div#content-main {
+    margin-top: 0px;
+}
+.breadcrumbs {
+    height: 18px;
+    margin-top: 46px !important;
+}
+@media (max-width: 1024px) {
+	div#sidebar {
+		margin-top: 0px;
+	}
+	div#content {
+		margin-top: 79px;
+	}
+	div#user-tools {
+		margin-right: 0px;
+	}
+	div#header {
+	    margin-top: -79px;
+	}
+	.breadcrumbs {
+	    margin-top: 0px !important;
+	}
+}
+div#sidebar.on {
+	margin-left: 0px;
+	transition: margin-left 0.25s;
+}
+div#sidebar.off {
+	margin-left: -260px;
+	transition: margin-left 0.25s;
+}
+div#content {
+    background: #1e1e2e;
+}
+div#header {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+}
+body.dashboard {
+    background: #1e1e2e;
+}
+body {
+    background: #1e1e2e;
+}
+table {
+    background: #27293d;
+    border: 0;
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 20px 0 rgba(0,0,0,.1);
+    border-radius: 6px;
+}
+.app-hello.module {
+    background: #27293d;
+}
+caption {
+    background: #27293d !important;
+}
+tbody {
+    background: #27293d;
+}
+form#changelist-form * {
+    background: #27293d !important;
+}
+#content h1 {
+    background: #1e1e2e !important;
+    z-index: 10000;
+    margin-top: 43px;
+    position: unset;
+    margin-bottom: -35px;
+}
+div#content-main {
+    margin-top: 57px;
+}
+form#changelist-form {
+    background: #27293d;
+    border-radius: 11px;
+}
+div#changelist {
+    background: #1e1e2e;
+}
+* {
+    color: #fff6 !important;
+    font-weight: 100 !important;
+    font-family: "Poppins" !important;
+    border-color: #fff3 !important;
+}
+input {
+    background: #ffffff1a;
+    border: none !important;
+}
+.login div#header {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+}
+h1 {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: white !important;
+    letter-spacing: 2px;
+}
+*:not(h1) {
+    color: #ffffff94 !important;
+    font-size: 11px;
+    letter-spacing: 0.7px;
+    font-weight: 300 !important;
+}
+h1#site-name a {
+    font-size: 19px !important;
+    font-weight: 100 !important;
+    color: white !important;
+}
+td a {
+    font-size: 9px !important;
+    /* text-decoration: underline !important; */
+    font-weight: 500 !important;
+    color: #ffffff73 !important;
+    letter-spacing: 1px;
+}
+.module {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #0000001f;
+}
+div#changelist {
+    background: #27293d;
+}
+fieldset.module.aligned {
+    background: #27293d;
+}
+input {
+    font-size: 11px !important;
+}
+.submit-row {
+    background: #484b63;
+    border: none;
+    width: 93%;
+    margin-left: 2%;
+    margin-top: -57px;
+    box-shadow: 0px 0px 33px #00000024;
+}
+div.module {
+    width: unset !important;
+}
+fieldset.module.aligned {
+    padding-bottom: 51px;
+}
+p.errornote {
+    background: #fa8072e0;
+    border: none;
+    box-shadow: 0px 0px 55px #df746921;
+    width: 93%;
+    margin-left: 2%;
+    font-size: 13px;
+    color: #fbf3f3 !important;
+}
+ul.errorlist {
+    background: #27293d;
+}
+ul.errorlist li {
+    color: #ff8282 !important;
+    font-weight: 100 !important;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+}
+.object-tools a:link, .object-tools a:visited:hover {
+    background: #1e1e2e;
+    border: 1px solid white;
+    color: white !important;
+}
+.object-tools a:link, .object-tools a:visited {
+    background: lightblue;
+    color: black !important;
+}
+a:hover {
+    color: lightblue !important;
+}
+body.login {
+    background: #27293d;
+}
+.login #container {
+    border: none !important;
+}
+.login #container {
+    border: none !important;
+    box-shadow: 0px 0px 30px #0006;
+    background: #1e1e2e;
+}
+.login .submit-row {
+    background: #1e1e2e !important;
+    box-shadow: none !important;
+}
+.breadcrumbs {
+    color: white !important;
+    font-size: 11px !important;
+    box-shadow: 0px 20px 20px 0px #0000004a;
+}
+div#sidebar {
+    box-shadow: 0px 0px 30px black;
+}
+p.paginator {
+    font-size: 11px;
+    color: lightblue !important;
+}
+.app-auth.module {
+    background: #27293d;
+}
+div#header {
+    /* margin-top: 0px; */
+    box-shadow: 0px 0px 50px black;
+}
+#recent-actions-module {
+    background: #27293c !important;
+}
+#content-related {
+    background: #1e1e2e;
+}
+#recent-actions-module * {
+    font-size: 11px;
+}
+#recent-actions-module h2 {
+    font-weight: 100 !important;
+    text-transform: uppercase;
+    color: white !important;
+    font-size: 13px !important;
+    letter-spacing: 2px;
+}
+.mini.quiet {
+    color: lightblue !important;
+    font-style: italic;
+    font-weight: 100 !important;
+}
+a.section {
+    font-weight: 100 !important;
+    color: lightblue !important;
+    letter-spacing: 1.5px;
+    padding-bottom: 0px inherit;
+    font-size: 13px !important;
+}
+.help * {
+    color: orange !important;
+    font-style: italic;
+    font-weight: 100 !important;
+}
+.login #header {
+    margin-top: 0px !important;
+    width: 100% !important;
+    height: 100px !important;
+}
+.module.aligned h2 {
+    background: #27293d;
+    font-weight: 100 !important;
+    text-transform: uppercase;
+    color: lightblue !important;
+    letter-spacing: 1.5px;
+}
+#toolbar {
+    background: #27293d !important;
+}
+input[type="submit"] {
+    background: lightblue !important;
+    color: black !important;
+}
+input[type="submit"]:hover {
+    background: none !important;
+    color: white !important;
+    border: 1px solid #ffffff33 !important;
+}
+#toolbar {
+    border: none !important;
+}
+#changelist-filter {
+    background: #27293d;
+}
+#changelist-filter h2 {
+    background: #27293d;
+    padding-top: 15px;
+    font-weight: 100 !important;
+    color: lightblue !important;
+}
+#changelist-filter {
+    background: #27293d;
+}
+#changelist-filter li.selected {
+    background: #add8e633;
+}
+.selector-filter {
+    background: #add8e61a !important;
+}
+.selector div select {
+    background: #27293d !important;
+    box-shadow: 0px 0px 33px #00000080 inset;
+}
+.selector div select * {
+    font-family: 'Cutive Mono', monospace !important;
+    font-size: 12px;
+    color: #d6f3d7b3 !important;
+    line-height: 14px !important;
+}
+.selector-chooser {
+    background: lightblue !important;
+    border-radius: 7px;
+}
+.calendarbox {
+    background: #484b63 !important;
+    border: none !important;
+    box-shadow: 0px 0px 33px #00000080 !important;
+padding-top: 34px;
+}
+.calendar tbody * {
+    background: #add8e64d !important;
+    color: black !important;
+}
+.calendar-shortcuts {
+    background: #484b63 !important;
+}
+.calendar-cancel {
+    background: #484b63 !important;
+}
+.clockbox {
+    background: #484b63;
+	border: none;
+box-shadow: 0px 0px 33px #00000080 !important; 
+}
+.clockbox h2 {
+	border-radius: 5px;
+}
+.deletelink-box a {
+    background: #ff6b6b !important;
+}
+.button.cancel-link {
+    background: white !important;
+    color: black !important;
+    border: 6px solid #ffabab !important;
+    padding: 4px !important;
+}
+.module {
+    background: #27293d !important;
+}
+.module thead th {
+    background: #27293d !important;
+}
+tbody a {
+    text-decoration: underline !important;
+    color: #add8e687 !important;
+}
+@media (min-width: 767px) {
+	.login #header {
+		width: 100% !important;
+	}
+}
+#site-name {
+    margin-top: 2px !important;
+}
+/* EXTRA */
+body {
+    background: linear-gradient(0deg,#26263c,#11111f) !important;
+    min-height: 100vh;
+}
+div#content {
+    background: none;
+}
+div#content h1 {
+    background: none !important;
+}
+fieldset.module.aligned {
+    background-image: linear-gradient(0deg,#2b2b40,#1e1e2e) !important;
+    box-shadow: 0px 0px 10px #00000047 !important;
+}
+ul.errorlist {
+    background: none;
+}
+div#changelist {
+    background-image: linear-gradient(0deg,#33334c,#1e1e2e) !important;
+    box-shadow: 0px 0px 10px #00000047 !important;
+}
+
+form#changelist-form {
+    background: none !important;
+}
+
+form#changelist-form * {
+    background: none !important;
+}
+
+div#toolbar {
+    background: none !important;
+}
+
+div#changelist-filter {
+    background: none !important;
+}
+
+div#changelist-filter h2 {
+    background: none !important;
+}
+div.module {
+    background: linear-gradient(0deg,#33334c,#1e1e2e) !important;
+    box-shadow: 0px 0px 16px 0px #00000070;
+}
+div.module table {
+    background: none !important;
+    box-shadow: none !important;
+}
+div#content-related {
+    background: none;
+}
+caption {
+    background: none !important;
+}
+tbody {
+    background: none !important;
+}
+li a.addlink {
+    background: #a0daa0 !important;
+    border: none !important;
+    transition: 0.3s;
+}
+li a.addlink:hover {
+    box-shadow: 0px 10px 20px black !important;
+    transition: 0.3s;
+}
+div#content-related {
+    margin-top: 53px;
+}
+body.login {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+}
+select {
+    background: #373745;
+    border: none;
+}
+.module textarea {
+    background: #363644;
+    border: none;
+    font-size: 11px;
+}
+fieldset.module.aligned {
+    display: grid;
+}
+</style>
+</head>
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+<div id="sidebar"></div>
+
+<!-- Container -->
+<div id="container">
+
+    {% if not is_popup %}
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+        {% block branding %}{% endblock %}
+        </div>
+        {% block usertools %}
+        {% if has_permission %}
+        <div id="user-tools">
+            {% block welcome-msg %}
+                {% trans 'Welcome,' %}
+                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+            {% endblock %}
+            {% block userlinks %}
+                {% if site_url %}
+                    <a href="{{ site_url }}">{% trans 'View site' %}</a> /
+                {% endif %}
+                {% if user.is_active and user.is_staff %}
+                    {% url 'django-admindocs-docroot' as docsroot %}
+                    {% if docsroot %}
+                        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+                    {% endif %}
+                {% endif %}
+                {% if user.has_usable_password %}
+                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+                {% endif %}
+                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+            {% endblock %}
+        </div>
+        {% endif %}
+        {% endblock %}
+        {% block nav-global %}{% endblock %}
+    </div>
+    <!-- END Header -->
+    {% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    {% if title %} &rsaquo; {{ title }}{% endif %}
+    </div>
+    {% endblock %}
+    {% endif %}
+
+    {% block messages %}
+        {% if messages %}
+        <ul class="messagelist">{% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}</ul>
+        {% endif %}
+    {% endblock messages %}
+
+    <!-- Content -->
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+        {% block pretitle %}{% endblock %}
+        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+        {% block content %}
+        {% block object-tools %}{% endblock %}
+        {{ content }}
+        {% endblock %}
+        {% block sidebar %}{% endblock %}
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+
+    {% block footer %}<div id="footer"></div>{% endblock %}
+</div>
+<!-- END Container -->
+
+</body>
+</html>

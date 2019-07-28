@@ -1,0 +1,37 @@
+id
+
+// Link
+parent_product
+
+// Status
+visible
+for_sale
+discontinued
+inventory
+uofm
+
+// Basic Info
+name
+category
+
+// Souce Info 
+upc (AKA bar_code)
+vendor
+model
+brand
+text_document
+spec_kv
+details_kv
+vendor_code
+man_part_number
+htc_number
+
+// Price
+msrp
+base_price (AKA cost)
+list_price DEFAULT msrp
+
+// Time
+creation_timestamp
+last_changed_timestamp
+job_timestamp

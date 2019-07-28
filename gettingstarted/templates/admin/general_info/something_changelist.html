@@ -1,0 +1,966 @@
+{% load i18n static jet_tags %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% jet_get_current_theme as THEME %}
+{% jet_get_current_version as JET_VERSION %}
+{% block html %}<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static "jet/css/vendor.css" as url %}{{ url|jet_append_version }}" />
+<link rel="stylesheet" type="text/css" href="{% static "jet/css/icons/style.css" as url %}{{ url|jet_append_version }}" />
+<link rel="stylesheet" type="text/css" href="{% static "jet/css/themes/"|add:THEME|add:"/base.css" as url %}{{ url|jet_append_version }}" class="base-stylesheet" />
+<link rel="stylesheet" type="text/css" href="{% static "jet/css/themes/"|add:THEME|add:"/select2.theme.css" as url %}{{ url|jet_append_version }}" class="select2-stylesheet" />
+<link rel="stylesheet" type="text/css" href="{% static "jet/css/themes/"|add:THEME|add:"/jquery-ui.theme.css" as url %}{{ url|jet_append_version }}" class="jquery-ui-stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/mode-html.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/mode-pgsql.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/mode-javascript.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/mode-django.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/mode-scss.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/keybinding-vim.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/theme-dracula.js"></script>
+
+<script>
+var editors = {}
+function toggle_code_preview(id) {
+	item = $("#" + id)
+	if (item.hasClass("jet_collapse")) {
+		item.removeClass("jet_collapse");
+	} else {
+		item.addClass("jet_collapse");
+	}
+	window.setTimeout(function() {
+		editors[id].resize();
+	}, 533);
+}
+</script>
+<style>
+/* Temlpate preview */
+.template_preview {
+	background-color: #FFF;
+	background-size: 30px 30px;
+	background-position: 0 0, 15px 15px;
+	background-image: linear-gradient(45deg, #f1f1f1 25%, transparent 25%, transparent 75%, #f1f1f1 75%, #f1f1f1 ), linear-gradient(45deg, #f1f1f1 25%, transparent 25%, transparent 75%, #f1f1f1 75%, #f1f1f1);
+}
+.template_preview > * {
+	position: absolute;
+}
+/* Temlpate preview */
+/* Fix bootstrap */
+.form-row {
+    display: initial;
+}
+/* END Fix bootstrap */
+.editor {
+	resize:vertical;
+	overflow:auto;
+}
+.code_preview {
+	width: 500px;
+	height: 500px;
+	overflow: scroll;
+	transition: 0.5s;
+}
+.code_preview.jet_collapse {
+	width: 500px;
+	height: 30px;
+	overflow: hidden;
+	transition: 0.5s;
+}
+.changelist-footer.fixed {
+    z-index: 4;
+}
+table.helper {
+    z-index: 4;
+}
+/* @TODO Do something better for img-src. */
+a.sidebar-popup-list-item-link {
+    text-transform: capitalize;
+}
+.code_primary {
+    background: #e6e6e6;
+    padding: 5px;
+    border-radius: 5px;
+    color: #1b75b1;
+}
+.form-row.field-gcloud_img_src {
+    display: none;
+}
+/*
+.sidebar {
+    background-image: url(https://images.unsplash.com/photo-1483791424735-e9ad0209eea2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80);
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: saturation;
+    background-color: #006179;
+}
+.sidebar * {
+    text-shadow: 0px 0px 3px #135888;
+    font-size: 100;
+}
+*/
+.nh_changelist_no_data {
+    background: #e3ecf2;
+    border-radius: 5px 5px 0px 0px;
+    height: 100%;
+    padding: 10px;
+}
+.nh_changelist_no_data p {
+    margin: auto;
+    margin-left: 43%;
+    color: #5fadde;
+}
+.admin_no_images_message {
+    margin-top: 33px;
+    margin-left: 93px;
+    color: #5fadde;
+}
+.admin_table_image_list_container {
+    width: 250px;
+    background: #e3ecf2;
+    overflow-x: scroll;
+    box-shadow: 0px 0px 10px #0000003d inset;
+    padding: 5px;
+    border-radius: 5px;
+}
+.admin_table_image_list_content {
+    width: 100% !important;
+    display: flex;
+    height: 85px;
+}
+.admin_table_image_list_content a {
+    margin: 5px;
+}
+/*
+*/
+.dash_tag {
+    padding: 4px;
+    display: inline-block;
+    margin-right: 10px;
+    background-color: #E3ECF2;
+    color: #7f8fa4;
+    border-radius: 4px;
+    font-size: 11px;
+}
+table#result_list {
+    margin-bottom: 0px;
+}
+.changelist-footer {
+    border-top: 1px solid #2880b92e;
+}
+@media only screen and (max-width: 960px) {
+	.results {
+		width: 100% !important;
+		margin-left: 23px;
+		border-radius: 5px 5px 0px 0px;
+	}
+	br.ace_pad {
+		display: none;
+	}
+}
+body.login div#container input[type="text"] {
+    background: #efefef;
+}
+body.login div#container input[type="password"] {
+    background: #efefef;
+}
+body:not(.login) {
+    background: linear-gradient(to bottom left, #1b75b1, #ffffffd4);
+    min-height: 100vh;
+}
+.dashboard-item {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.dashboard-item-content {
+    box-shadow: none;
+}
+table#result_list {
+    box-shadow: none;
+}
+.changelist-footer {
+    border-radius: 5px;
+    padding: 10px;
+    border-radius: 0px 0px 5px 5px;
+}
+form#changelist-form {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12) !important;
+    border-radius: 5px;
+}
+.sidebar * {
+    font-weight: 100 !important;
+}
+.sidebar {
+    background-image: url(https://3.bp.blogspot.com/-sXM7XSWxQck/W942tpzjHJI/AAAAAAAAAP0/tfycserf_Pw_6gH2Ub_nPyY0rIbygHcFACHMYCw/s800/iphone-5s-wallpaper.jpg);
+    background-size: cover;
+    background-position: center;
+    background-color: #272727;
+    background-blend-mode: color-dodge;
+}
+h1#site-name a {
+    text-shadow: none !important;
+    color: white !important;
+    font-size: 15px;
+    font-weight: 100 !important;
+    font-family: Helvetica;
+}
+span.icon-arrow-right.breadcrumbs-separator {
+    color: white !important;
+}
+span.select2-selection {
+    border: none !important;
+}
+.user-tools ul {
+    border: 1px solid white;
+    color: white;
+}
+li.user-tools-welcome-msg {
+    font-weight: 100 !important;
+    font-family: Helvetica !important;
+    color: white;
+}
+.object-tools a.addlink:hover {
+    background: #4CAF50;
+    box-shadow: 0px 5px 9px #0d344e70;
+    transition: 0.5s;
+    color: white;
+}
+button.button:hover {
+    box-shadow: 0px 5px 9px #0d344e70;
+    transition: 0.5s !important;
+    color: white;
+}
+input {
+    border: none;
+}
+input {
+    border: none !important;
+}
+input[type="submit"]:hover {
+    box-shadow: 0px 5px 9px #0d344e70;
+    transition: 0.5s !important;
+    color: white;
+}
+span.select2-dropdown {
+    box-shadow: 0 0 4px 0 #bbbbbb !important;
+}
+.sidebar-popup.scrollable * {
+    text-shadow: none !important;
+}
+fieldset input {
+    background: #efefef !important;
+}
+fieldset span.select2-selection {
+    background: #efefef !important;
+}
+.module span.select2-selection.select2-selection--multiple {
+    background: #efefef !important;
+}
+fieldset.module {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    border-radius: 5px;
+}
+.module textarea {
+    background: #efefef;
+}
+.submit-row {
+    padding-bottom: 9px;
+}
+* {
+    font-family: Helvetica !important;
+}
+.ui-dialog input {
+    background: #efefef;
+}
+.ui-dialog input {
+    background: #efefef;
+}
+body.login div#container {
+    box-shadow: 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
+    background-image: url(https://images.unsplash.com/photo-1483791424735-e9ad0209eea2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80);
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: saturation;
+    background-color: #006179;
+    margin-top: 25vh;
+}
+body.login {
+    background: linear-gradient(to bottom right, #2196f35e, #4caf504a);
+    min-height: 75vh;
+    padding: 0px;
+}
+body.login label {
+    color: white;
+    font-weight: 100;
+}
+#branding {
+    display: block;
+    background: rgb(51,49,58);
+}
+.sidebar-section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+span.sidebar-container-toggle.sidebar-header-menu-icon.icon-menu.sidebar-toggle {
+    color: white;
+}
+a.button.transparent.reset-dashboard-link {
+    border: 1px solid white;
+    color: white;
+}
+a.button.transparent.reset-dashboard-link:hover {
+    border: 1px solid rgb(28, 172, 252);
+    color: white;
+}
+.breadcrumbs.initialized a {
+    color: white !important;
+}
+.breadcrumbs.breadcrumbs {
+    color: rgb(51,49,58);
+}
+.changelist-footer * {
+    color: rgb(51,49,58) !important;
+}
+button.button {
+    color: white !important;
+}
+li.success a {
+    color: #333139;
+}
+.ace_content * {
+    font-family: courier !important;
+}
+.ace_line {
+    height: 15px !important;
+}
+.ace_content * { 
+    font-size: 13.349px;
+}
+</style>
+<style>
+/* Material */
+span.sidebar-link-label {
+    color: white;
+    font-family: Helvetica !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.05em;
+}
+.sidebar-title {
+    color: #ffffffba;
+    font-size: 1em;
+}
+.sidebar {
+    box-shadow: 0px 0px 10px #00000073;
+}
+span.sidebar-right {
+    color: white !important;
+}
+body {
+    background: #f5f5f5 !important;
+}
+.sidebar {
+    background: #03A9F4;
+}
+div#branding {
+    background: #607D8B;
+}
+.dashboard-item-header {
+    background: #03A9F4;
+    color: white;
+    font-size: 1.3em;
+    border-radius: 3px 3px 0px 0px;
+    padding: 5px 13px 5px 13px;
+}
+.dashboard-item-header * {
+    color: white;
+    font-weight: 100;
+}
+div#branding {
+    background: #03A9F4;
+    border-bottom: 1px solid #ffffff2e;
+}
+div#branding * {
+    color: white;
+}
+span.sidebar-right-arrow.icon-arrow-right {
+    color: white;
+    font-weight: bold !important;
+}
+span.icon-add {
+    color: white;
+}
+.dashboard-item-content a {
+    color: #607D8B;
+}
+
+
+
+span.icon-arrow-right.breadcrumbs-separator {
+    color: #03A9F4 !important;
+    font-weight: bold !important;
+    font-size: 20px;
+}
+.breadcrumbs.initialized a {
+    color: #607D8B !important;
+}
+/*
+th {
+    padding: 0px;
+}
+th a {
+    padding: 19px;
+}
+*/
+th.sortable a:hover {
+    color: white;
+}
+th * {
+    font-weight: bold !important;
+}
+th * {
+    color: #607D8B;
+}
+#changelist .actions .button, #changelist .actions .button:visited, #changelist .actions .button {
+    background: #5ecdff;
+    color: #03A9F4 !important;
+    font-weight: bold !important;
+}
+#changelist .actions .button, #changelist .actions .button:visited, #changelist .actions .button:hover {
+    color: white !important;
+}
+/*
+#toolbar form input[type="submit"], #toolbar form input[type="submit"]:visited, #toolbar form input[type="submit"] {
+    background: #5ecdff;
+    color: #03A9F4 !important;
+    font-weight: bold !important;
+}
+#toolbar form input[type="submit"], #toolbar form input[type="submit"]:visited, #toolbar form input[type="submit"]:hover {
+    color: white !important;
+}
+*/
+ul.sidebar-dependent * {
+    color: #03A9F4;
+    font-weight: 500 !important;
+    letter-spacing: 0.05em;
+    font-size: 0/7rem;
+}
+.user-tools ul.opened {
+    background: #03A9F4;
+}
+li.user-tools-welcome-msg {
+    border-bottom: 1px solid #ffffff75 !important;
+}
+ul.sidebar-dependent {
+    border: 1px solid #03A9F4;
+}
+a.addlink:hover {
+    background: #4CAF50 !important;
+}
+a.addlink {
+    background: #8BC34A !important;
+    color: white !important;
+}
+a.addlink::before {
+    color: white !important;
+}
+sidebar-dependent.opened .user-tools-welcome-msg {
+    color: white !important;
+}
+/*
+input[type="text"] {
+    background: none;
+    border-bottom: 1px solid #607D8B !important;
+    border-radius: 0px;
+}
+td {
+    padding: 19px;
+}
+.changelist-footer {
+    padding: 19px;
+}
+div#content {
+    padding: 39px;
+}
+.dashboard-item-header {
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 19px;
+}
+*/
+input[type="text"] {
+    border: 1px solid #03A9F4 !important;
+    background: white !important;
+}
+.breadcrumbs.initialized {
+    background: white;
+}
+span.sidebar-container-toggle.sidebar-header-menu-icon.icon-menu.sidebar-toggle {
+    background: white;
+    color: #2196F3;
+}
+div#content {
+    box-shadow: 0px 0px 10px #0000002b inset;
+}
+div#content {
+    min-height: calc(100vh - 51px);
+}
+.breadcrumbs.initialized {
+    background: white;
+    min-height: 51px;
+    margin: 0px;
+}
+li a.addlink {
+    background: white !important;
+}
+li a.addlink::before {
+    color: #8BC34A !important;
+}
+a::before {
+    font-size: 17px;
+}
+.object-tools a.addlink {
+    background: #8BC34A !important;
+    color: white !important;
+}
+.object-tools a.addlink::before {
+    color: white !important;
+}
+.breadcrumbs *:not(span):hover {
+    color: #03A9F4 !important;
+}
+.breadcrumbs *:not(span) {
+    font-size: 17px;
+    text-transform: capitalize;
+    text-decoration: underline;
+    font-weight: 100 !important;
+}
+.breadcrumbs {
+    font-size: 17px !important;
+    text-transform: capitalize !important;
+    font-weight: 100;
+}
+tr.row1.selected {
+    background: #dbf4ff !important;
+}
+#content>h1:after {
+    content: ":";
+}
+#content>h1 {
+    display: block;
+    font-size: 16px;
+    text-transform: capitalize;
+    text-decoration: underline;
+    font-weight: 500;
+    color: #607D8B;
+    letter-spacing: 0.03em;
+}
+</style>
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+{% jet_get_date_format as date_format %}
+{% jet_get_time_format as time_format %}
+{% jet_get_datetime_format as datetime_format %}
+
+<script type="text/javascript" charset="utf-8">
+    var DATE_FORMAT = "{{ date_format }}";
+    var TIME_FORMAT = "{{ time_format }}";
+    var DATETIME_FORMAT = "{{ datetime_format }}";
+</script>
+<script type="text/javascript" src="{% url 'jet:jsi18n' %}"></script>
+<script src="{% static "jet/js/build/bundle.min.js" as url %}{{ url|jet_append_version }}"></script>
+
+{% jet_static_translation_urls as translation_urls %}
+{% for url in translation_urls %}
+    <script src="{% static url as url %}{{ url|jet_append_version }}"></script>
+{% endfor %}
+
+{% block extrahead %}{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+{% load i18n %}
+
+<body class="{% if request.COOKIES.sidebar_pinned != 'false' %}menu-pinned {% endif %}{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
+
+    {% if not is_popup %}
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <span id="branding-menu" class="sidebar-header-menu-icon icon-menu sidebar-toggle"></span>
+            <span id="branding-pin" class="sidebar-link-icon icon-pin sidebar-pin"></span>
+            {% block branding %}{% endblock %}
+        </div>
+        {% block usertools %}
+        {% if user.is_active and user.is_staff or has_permission %}
+        <div id="user-tools">
+            {% block welcome-msg %}
+                {% trans 'Welcome,' %}
+                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+            {% endblock %}
+            {% block userlinks %}
+                {% if site_url %}
+                    <a href="{{ site_url }}">{% trans 'View site' %}</a> /
+                {% endif %}
+                {% if user.is_active and user.is_staff %}
+                    {% url 'django-admindocs-docroot' as docsroot %}
+                    {% if docsroot %}
+                        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+                    {% endif %}
+                {% endif %}
+                {% if user.has_usable_password %}
+                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+                {% endif %}
+                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+            {% endblock %}
+        </div>
+        {% endif %}
+        {% endblock %}
+    </div>
+    <!-- END Header -->
+
+    {% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    {% if title %} &rsaquo; {{ title }}{% endif %}
+    </div>
+    {% endblock %}
+    {% endif %}
+
+    {% block messages %}
+        {% if messages %}
+        <ul class="messagelist">{% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}</ul>
+        {% endif %}
+    {% endblock messages %}
+
+    <!-- Content -->
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+	CUSTOM	
+        {% block pretitle %}{% endblock %}
+        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+        {% block content %}
+        {% block object-tools %}{% endblock %}
+        {{ content }}
+        {% endblock %}
+        {% block sidebar %}{% endblock %}
+        <br class="clear" />
+    </div>
+    <!-- END Content -->
+
+    {% block footer %}<div id="footer"></div>{% endblock %}
+
+    {% jet_delete_confirmation_context as delete_confirmation_context %}
+    {{ delete_confirmation_context }}
+
+    {% jet_change_form_sibling_links_enabled as show_siblings %}
+    {% if change and show_siblings %}
+        <div class="changeform-navigation">
+            {% spaceless %}
+                {% jet_previous_object as sibling %}
+                <a{% if sibling.url %} href="{{ sibling.url }}"{% endif %} class="changeform-navigation-button segmented-button left{% if not sibling %} disabled{% endif %}" title="{{ sibling.label }}">
+                    <span class="changeform-navigation-button-icon left icon-arrow-left"></span>
+                    <span class="changeform-navigation-button-label">
+                        {% if sibling %}
+                            {{ sibling.label }}
+                        {% else %}
+                            ---
+                        {% endif %}
+                    </span>
+                </a>
+
+                {% jet_next_object as sibling %}
+                <a{% if sibling.url %} href="{{ sibling.url }}"{% endif %} class="changeform-navigation-button segmented-button right{% if not sibling %} disabled{% endif %}" title="{{ sibling.label }}">
+                    <span class="changeform-navigation-button-icon right icon-arrow-right"></span>
+                    <span class="changeform-navigation-button-label">
+                        {% if sibling %}
+                            {{ sibling.label }}
+                        {% else %}
+                            ---
+                        {% endif %}
+                    </span>
+                </a>
+            {% endspaceless %}
+        </div>
+    {% endif %}
+
+    {% jet_get_side_menu_compact as SIDE_MENU_COMPACT %}
+    {% if not is_popup %}
+        <div class="related-popup-container scrollable">
+            <a href="#" class="related-popup-back">
+                <span class="related-popup-back-icon icon-arrow-left"></span>
+                <span class="related-popup-back-label">{% trans "back" %}</span>
+            </a>
+            <span class="icon-refresh loading-indicator"></span>
+        </div>
+
+        <div class="sidebar-header-wrapper sidebar-dependent">
+            <div class="sidebar-header sidebar-dependent">
+                <a href="#" class="sidebar-header-menu sidebar-toggle">
+                    <span class="sidebar-header-menu-icon icon-menu"></span>
+                    <span class="sidebar-header-menu-icon icon-cross"></span>
+                </a>
+            </div>
+        </div>
+        <div class="sidebar sidebar-dependent">
+            <div class="sidebar-wrapper scrollable">
+                <div class="sidebar-section">
+                    {% if user.is_active and user.is_staff %}
+                        <a href="{% url 'admin:index' %}" class="sidebar-link icon">
+                            <span class="sidebar-link-label">
+                                <span class="sidebar-link-icon icon-data"></span>
+                                {% trans 'Home' %}
+                            </span>
+                        </a>
+                    {% endif %}
+                    {% if site_url %}
+                        <a href="{{ site_url }}" class="sidebar-link icon">
+                            <span class="sidebar-link-label">
+                                <span class="sidebar-link-icon icon-open-external"></span>
+                                {% trans 'View site' %}
+                            </span>
+                        </a>
+                    {% endif %}
+                    {% url 'django-admindocs-docroot' as docsroot %}
+                    {% if docsroot %}
+                        <a href="{{ docsroot }}" class="sidebar-link icon">
+                            <span class="sidebar-link-label">
+                                <span class="sidebar-link-icon icon-book"></span>
+                                {% trans 'Documentation' %}
+                            </span>
+                        </a>
+                    {% endif %}
+                    {% block nav-global %}{% endblock %}
+                </div>
+
+                {% if user.is_active and user.is_staff %}
+                    {% jet_get_menu as app_list %}
+                    {% if SIDE_MENU_COMPACT %}
+                        {% for app in app_list %}
+                            {% if app.has_perms %}
+                                <div class="sidebar-section">
+                                    <div class="sidebar-title">
+                                        <a{% if app.url %} href="{{ app.url }}"{% endif %} class="sidebar-title-link"{% if app.url_blank %} target="_blank"{% endif %}>
+                                            {{ app.label }}
+                                        </a>
+                                    </div>
+                                    {% for model in app.items %}
+                                        {% if model.has_perms %}
+                                            <div>
+                                                <a{% if model.url %} href="{{ model.url }}"{% endif %} class="sidebar-link"{% if model.url_blank %} target="_blank"{% endif %}>
+                                                    <span class="sidebar-right">
+                                                        <span class="sidebar-right-arrow icon-arrow-right"></span>
+                                                    </span>
+                                                    <span class="sidebar-link-label">{{ model.label }}</span>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <form action="{% url "jet:toggle_application_pin" %}" method="POST" id="toggle-application-pin-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="app_label">
+                        </form>
+
+                        <div class="sidebar-section">
+                            <div class="sidebar-title">
+                                <span class="sidebar-right">
+                                    <a href="#" class="sidebar-right-edit edit-apps-list"><span class="icon-settings"></span></a>
+                                </span>
+                                {% trans 'Applications' %}
+                            </div>
+
+                            <div class="apps-list-pinned">
+                                {% for app in app_list %}
+                                    {% if app.has_perms and app.pinned %}
+                                        <a{% if app.url %} href="{{ app.url }}"{% endif %} class="sidebar-link popup-section-link app-item" data-app-label="{{ app.app_label }}" data-popup-section-class="sidebar-popup-section-{{ app.app_label }}" data-order="{{ forloop.counter }}"{% if app.url_blank %} target="_blank"{% endif %}>
+                                            <span class="sidebar-left collapsible">
+                                                <span class="sidebar-left-pin icon-star pin-toggle"></span>
+                                                <span class="sidebar-left-unpin icon-cross pin-toggle"></span>
+                                            </span>
+
+                                            <span class="sidebar-right">
+                                                <span class="sidebar-right-arrow icon-arrow-right"></span>
+                                            </span>
+
+                                            <span class="sidebar-link-label">
+                                                {{ app.label }}
+                                            </span>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <a href="#" class="sidebar-center-link apps-hide">
+                                <span class="apps-hide-label apps-visible">{% trans "Hide applications" %}</span>
+                                <span class="apps-hide-label apps-hidden">{% trans "Show hidden" %}</span>
+                            </a>
+                            <div class="apps-list">
+                                {% for app in app_list %}
+                                    {% if app.has_perms and not app.pinned %}
+                                        <a{% if app.url %} href="{{ app.url }}"{% endif %} class="sidebar-link popup-section-link app-item" data-app-label="{{ app.app_label }}" data-popup-section-class="sidebar-popup-section-{{ app.app_label }}" data-order="{{ forloop.counter }}"{% if app.url_blank %} target="_blank"{% endif %}>
+                                            <span class="sidebar-left collapsible">
+                                                <span class="sidebar-left-pin icon-star pin-toggle"></span>
+                                                <span class="sidebar-left-unpin icon-cross pin-toggle"></span>
+                                            </span>
+
+                                            <span class="sidebar-right">
+                                                <span class="sidebar-right-arrow icon-arrow-right"></span>
+                                            </span>
+
+                                            <span class="sidebar-link-label">
+                                                {{ app.label }}
+                                            </span>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="sidebar-section last">
+                        <div class="dialog-confirm" id="bookmarks-add-dialog" title="{% trans "Add bookmark" %}">
+                            <form action="{% url "jet:add_bookmark" %}" method="POST" id="bookmarks-add-form">
+                                {% csrf_token %}
+                                <p>{% trans "Title" %}:</p>
+                                <input type="text" name="title" class="fill_width">
+                                <p>{% trans "URL" %}:</p>
+                                <input type="text" name="url" class="fill_width">
+                            </form>
+                        </div>
+                        <form action="{% url "jet:remove_bookmark" %}" method="POST" id="bookmarks-remove-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="id">
+                        </form>
+                        <div class="dialog-confirm" id="bookmarks-remove-dialog" title="{% trans "Delete bookmark" %}">
+                            <p>{% trans "Are you sure want to delete this bookmark?" %}</p>
+                        </div>
+
+                        <div class="sidebar-title">
+                            <span class="sidebar-right">
+                                <a href="#" class="sidebar-right-plus bookmarks-add" title="{% trans "Add bookmark" %}"{% if title %} data-title="{{ title }}"{% endif %}><span class="icon-add"></span></a>
+                            </span>
+                            {% trans 'bookmarks' %}
+                        </div>
+
+                        <div class="bookmarks-list">
+                            {% jet_get_bookmarks user as bookmarks %}
+                            {% for bookmark in bookmarks %}
+                                <a href="{{ bookmark.url }}" class="sidebar-link bookmark-item">
+                                    <span class="sidebar-right collapsible">
+                                        <span class="sidebar-right-remove bookmarks-remove" data-bookmark-id="{{ bookmark.pk }}">{% trans "Remove" %}</span>
+                                    </span>
+                                    <span class="sidebar-link-label">{{ bookmark.title }}</span>
+                                </a>
+                            {% endfor %}
+                            <a class="sidebar-link bookmark-item clone">
+                                <span class="sidebar-right collapsible">
+                                    <span class="sidebar-right-remove bookmarks-remove">{% trans "Remove" %}</span>
+                                </span>
+                                <span class="sidebar-link-label"></span>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if app_list and not SIDE_MENU_COMPACT %}
+                <div class="sidebar-popup-container">
+                    <div class="sidebar-popup scrollable">
+                        <a href="#" class="sidebar-close sidebar-back">
+                            <span class="sidebar-close-icon icon-arrow-left"></span>
+                        </a>
+                        {% for app in app_list %}
+                            {% if app.has_perms %}
+                                <div class="sidebar-popup-section sidebar-popup-section-{{ app.app_label }}">
+                                    <div class="sidebar-popup-title">
+                                        {{ app.label }}
+                                    </div>
+
+                                    <input class="sidebar-popup-search" placeholder="{% trans "Search" %}...">
+
+                                    <ul class="sidebar-popup-list">
+                                        {% if app.url %}
+                                            <li class="sidebar-popup-list-item app-{{ app.app_label }}{{ app.current|yesno:" current," }}">
+                                                <a href="{{ app.url }}" class="sidebar-popup-list-item-link">{% trans 'Application page' %}</a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for model in app.items %}
+                                            {% if model.has_perms %}
+                                                <li class="sidebar-popup-list-item{% if model.name %} model-{{ model.name }}{% endif %}{{ model.current|yesno:" current," }}">
+                                                    <a{% if model.url %} href="{{ model.url }}"{% endif %} class="sidebar-popup-list-item-link"{% if model.url_blank %} target="_blank"{% endif %}>
+                                                        {{ model.label }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% jet_get_themes as THEMES %}
+    {% if THEMES %}
+        <li class="user-tools-contrast-block theme-chooser">
+            <div class="user-tools-contrast-block-title">{% trans "current theme" %}</div>
+            <div class="user-tools-theme-link-container">
+                {% spaceless %}
+                    {% for conf_theme in THEMES %}
+                        {% if conf_theme.theme %}
+                            <a href="#"
+                               class="user-tools-theme-link choose-theme{% if conf_theme.theme == THEME %} selected{% endif %}"
+                               data-theme="{{ conf_theme.theme }}"
+                               data-base-stylesheet="{% static "jet/css/themes/"|add:conf_theme.theme|add:"/base.css" %}?v={{ JET_VERSION }}"
+                               data-select2-stylesheet="{% static "jet/css/themes/"|add:conf_theme.theme|add:"/select2.theme.css" %}?v={{ JET_VERSION }}"
+                               data-jquery-ui-stylesheet="{% static "jet/css/themes/"|add:conf_theme.theme|add:"/jquery-ui.theme.css" %}?v={{ JET_VERSION }}"
+                               {% if conf_theme.title %} title="{{ conf_theme.title }}"{% endif %}
+                               style="background-color: {{ conf_theme.color|default:"white" }};"
+                                    ></a>
+                        {% endif %}
+                    {% endfor %}
+                {% endspaceless %}
+            </div>
+        </li>
+    {% endif %}
+</div>
+<!-- END Container -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded",function event() {
+	// Fix formatting for tables with underscore values.
+	$(".sidebar-link-label").each(function() {
+		var $this = $(this);
+		$this.text($this.text().replace(/_/g, ' '));
+		// Replace "Authentication and Authorization" with "Manage Users".
+		// This is not possible in the templates since it's mostly javascript.
+		$this.text($this.text().replace(/Authentication and Authorization/g, 'Manage Users'));
+	});
+	if (!$("#changelist-form .results").length) {
+		$("#changelist-form").prepend("<div class='nh_changelist_no_data'><p>No data availible.</p></div>");
+	}
+// @TODO Replace the same text in the sub-menu.
+//	$(".sidebar-popup-title").each(function() {
+//		$this.text($this.text().replace(/Authentication and Authorization/g, 'Manage Users'));
+//	});
+});
+</script>
+</body>
+</html>{% endblock %}

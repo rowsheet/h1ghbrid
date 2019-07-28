@@ -1,0 +1,40 @@
+<style>
+.carousel-caption.text-center {
+    margin-bottom: 150px;
+}
+ol.carousel-indicators {
+    margin-bottom: 100px;
+}
+</style>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+	<ol class="carousel-indicators">
+		{% for carousel in carousel_items %} 
+		<li data-target="#myCarousel" data-slide-to="{{ forloop.counter|add:"-1" }}" class="{% if forloop.first %}active{% endif %}"></li>
+		{% endfor %}
+	</ol>
+	<div class="carousel-inner">
+		{% for carousel in carousel_items %}
+		<div class="carousel-item {% if forloop.first %}active{% endif %}">
+			<img style="object-fit: cover;" src="{{ carousel.img_src.gcloud_img_src }}">
+			<div class="container">
+				<div class="carousel-caption {{ carousel.align }}">
+					<h1>{{ carousel.title }} {{ name }}<h1>
+					<p>{{ carousel.text }}</p>
+					{% if carousel.button_title is not None %}
+					<p><a class="btn btn-lg btn-primary" href="{{ carousel.button_link }}" role="button">{{ carousel.button_title }}</a></p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
+</div>
+<!-- END Carousel -->

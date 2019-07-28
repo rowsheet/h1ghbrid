@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+
+<script>
+function toggle_sidebar() {
+	if ($("#sidebar").hasClass("on")) {
+		$("#sidebar").removeClass("on");
+		$("#sidebar").addClass("off");
+	} else {
+		$("#sidebar").addClass("on");
+		$("#sidebar").removeClass("off");
+	}
+}
+</script>
+<h1 id="site-name">
+<!-- <button onclick="toggle_sidebar()">Thing</button> -->
+<a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}<br>
+<p style="text-align: center; margin-top: -2px;">Administration</p></a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Swiper demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+		html, body {
+			position: relative;
+			height: 100%;
+		}
+		body {
+			background: #eee;
+			font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+			font-size: 14px;
+			color:#000;
+			margin: 0;
+			padding: 0;
+		}
+		.swiper-container {
+			width: 100%;
+			height: 100%;
+		}
+		.swiper-slide {
+			text-align: center;
+			font-size: 18px;
+			background: #fff;
+
+			/* Center slide text vertically */
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			-webkit-align-items: center;
+			align-items: center;
+		}
+	</style>
+</head>
+<body>
+<style>
+.container {
+	height: 100vh;
+	background: black;
+	padding-top: 20vh;
+}
+.typed {
+	display: inline;
+}
+span.typed-cursor.typed-cursor--blink {
+    display: none;
+}
+#typed1 span.one {
+    background: gray;
+}
+#typed1 span.two {
+    background: orange;
+}
+#typed1 span.three {
+    background: white;
+}
+#typed1 span.do_anything {
+    color: white;
+    background: red;
+    width: 86vw !important;
+    position: absolute;
+    margin-left: -40vw;
+    font-size: 64px;
+    text-transform: uppercase;
+    height: 209px;
+    border: 3px solid white;
+    margin-bottom: 10px !important;
+}
+span.tots {
+    font-size: 18px;
+}
+</style>
+<div class="swiper-container">
+<div class="swiper-wrapper">
+<div class="swiper-slide">
+	<script>
+window.onload = function() {
+	var typed2 = new Typed('#typed1', {
+		strings: [
+			"<span class='one'>Build smarter.</span>",
+			"<span class='two'>Build faster.</span>",
+			"<span class='three'>Build anything.</span>",
+			"<span class='do_anything'><span class='tots'>Think outside the square.</span><br>Do<br>Anything.</span>",
+		],
+		startDelay: 1000,
+		typeSpeed: 13,
+		backSpeed: 13,
+		fadeOut: false,
+		loop: false, 
+		smartBackspace: false 
+	});
+}
+	</script>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<img src="https://storage.googleapis.com/nullhorizon_landing/public/new_landing/logo_white.png" style="width: 100%;">
+				<br>
+				<br>
+				<br>
+				<h2 id="typed1" class="typed"></h2>
+			</div><!-- /.col-lg-4 -->
+		</div>
+	</div>
+</div>
+<div class="swiper-slide">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+				<h2>Heading</h2>
+				<p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+				<p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+			</div><!-- /.col-lg-4 -->
+		</div>
+	</div>
+</div>
+<div class="swiper-slide">Slide 3</div>
+<div class="swiper-slide">Slide 4</div>
+<div class="swiper-slide">Slide 5</div>
+<div class="swiper-slide">Slide 6</div>
+<div class="swiper-slide">Slide 7</div>
+<div class="swiper-slide">Slide 8</div>
+<div class="swiper-slide">Slide 9</div>
+<div class="swiper-slide">Slide 10</div>
+</div>
+
+<div class="swiper-pagination"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.10/typed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<script>
+		var swiper = new Swiper('.swiper-container', {
+			direction: 'vertical',
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+			},
+		});
+</script>
+</body>
+</html>
