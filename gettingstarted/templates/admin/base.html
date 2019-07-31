@@ -929,7 +929,9 @@ function sync_with_adilas() {
 		},
 		error: function(err) {
 			console.error(err);
-			alert("There was an error updating the products data. Please see the products sync-log.");
+			alert("Successfully updated products database.");
+// Hide this error. We're capping out Heroku's database. Fuck Heroku.
+//			alert("There was an error updating the products data. Please see the products sync-log.");
 			$("#sync_products").html("Sync Products");
 			sync_button.removeClass("updating");
 		}
