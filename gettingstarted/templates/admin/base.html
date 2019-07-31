@@ -886,6 +886,62 @@ body.login div#content {
                             </span>
                         </a>
                     {% endif %}
+<!--
+This is temporary. Don't fuck with this.
+
+A sync-products button was required. Boolean buttons on the products table were not allowing for sorting, so
+the default icon had to be fixed to be visible (for some reason it wasnt).
+
+Issues:
+
+1) There's an API route that allows products sync. It's not part of django and the whole products sync needs to
+be ported somewhere else. Not part of django means no authetication and anybody can hit it. If we want this
+to be protected, it'll have to be ported elsewhere. This is not a django model!
+
+2) Other issues include overlapping of jobs. The UI wont let you run sync-jobs multiple times, but multiple people
+might be able to run it.
+
+3) Inventory is not integrated yet. The only products with inventory were products imported from the first spreadsheet.
+Adilas doesn't give inventory the way we're fetching from it right now.
+-->
+<style>
+img[src$="admin/img/icon-yes.gif"], img[src$="admin/img/icon-yes.svg"], img[src$="admin/img/icon-no.gif"], img[src$="admin/img/icon-no.svg"], img[src$="admin/img/icon-unknown.gif"], img[src$="admin/img/icon-unknown.svg"] {
+    display: block;
+}
+</style>
+<script>
+function sync_with_adilas() {
+	sync_button = $("#sync_products");
+	if (sync_button.hasClass("updating")) {
+		alert("Products are currently being updating at this time. Please wait until product-sync is complete before syncing again.");
+		return;
+	}
+	sync_button.html("Updating...");
+	sync_button.addClass("updating");
+	$.ajax({
+		method: "GET",
+		url: "/sync_products",
+		success: function(resp) {
+			console.log(resp);
+			alert("Successfully updated products database.");
+			$("#sync_products").html("Sync Products");
+			sync_button.removeClass("updating");
+		},
+		error: function(err) {
+			console.error(err);
+			alert("There was an error updating the products data. Please see the products sync-log.");
+			$("#sync_products").html("Sync Products");
+			sync_button.removeClass("updating");
+		}
+	});
+}
+</script>
+                        <a onclick="sync_with_adilas()" class="sidebar-link icon">
+                            <span id="sync_products" class="sidebar-link-label">
+				Sync Products
+                            </span>
+<br>
+                        </a>
                     {% block nav-global %}{% endblock %}
                 </div>
 

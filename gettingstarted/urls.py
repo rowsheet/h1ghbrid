@@ -9,6 +9,7 @@ admin.autodiscover()
 
 import site_content.views
 import cms.views
+import adilas_cron
 
 # To add a new path, first import the app:
 # import blog
@@ -30,6 +31,7 @@ urlpatterns = [
 	path("api/", cms.views.api),
 	path("public_api/", cms.views.public_api),
 #  	path("<page>/", site_content.views.dynamic_page),
+	path("sync_products/", adilas_cron.sync_products_button),
 	path("<page>/", cms.views.dynamic_page),
 #	path("<auth>/<page>", cms.views.dynamic_page),
 #	path("members/<page>", cms.views.members),

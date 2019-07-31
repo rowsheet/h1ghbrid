@@ -206,12 +206,14 @@ class ProductAdmin(admin.ModelAdmin):
 	list_display = (
 		'name',
 		'description',
-		'_adilis_active',
-		'_adilas_import_timestamp',
-		'_adilas_import_error',
-		'_visible',
-		'_for_sale',
-		'_discontinued',
+
+# Formatting breaks sorting.
+		'adilas_active',
+		'adilas_import_timestamp',
+		'adilas_import_error',
+		'visible',
+		'for_sale',
+		'discontinued',
 		'_tags',
 		'parent_product',
 		'_vendor',
@@ -264,8 +266,8 @@ class ProductAdmin(admin.ModelAdmin):
 	def _discontinued(self, obj):
 		return format_bool(obj.discontinued)
 
-	def _adilis_active(self, obj):
-		return format_bool(obj.adilas_active)
+#	def _adilis_active(self, obj):
+#		return format_bool(obj.adilas_active)
 
 	def _adilas_import_timestamp(self, obj):
 		return mark_safe("""

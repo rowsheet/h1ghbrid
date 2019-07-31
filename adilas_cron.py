@@ -16,6 +16,14 @@ import datetime
 import time
 import json
 import requests
+from django.http import HttpResponse
+
+def sync_products_button(request, page="home"):
+	try:
+		UPDATE_FROM_ADILAS()
+		return HttpResponse("Update complete", status=200)
+	except Exception as ex:
+		return HttpResponse(str(ex), status=500)
 
 # Some things are encoded multiple times.
 # Also remove all single quotes.
@@ -84,9 +92,43 @@ def update_product(product, job_timestamp):
 		con = psycopg2.connect(os.environ.get("DATABASE_URL"))
 		cur = con.cursor()
 		sql = """
-		UPDATE
-			storefront_product
-		SET
+		INSERT INTO storefront_product
+		(
+			visible,
+			for_sale,
+			discontinued,
+			vendor,
+			inventory,
+
+			uofm,
+			description,
+			price,
+			base_price,
+			vendor_code,
+			name,
+			category,
+			adilas_import_timestamp,
+			adilas_active,
+			adilas_import_error
+		) VALUES (
+			False,
+			False,
+			False,
+			'Unknown',
+			0,
+
+			'%s',
+			'%s',
+			'%f',
+			'%f',
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			False,
+			False
+		) ON CONFLICT (upc)
+		DO UPDATE SET
 			uofm = '%s',
 			description = '%s',
 			price = '%f',
@@ -96,10 +138,17 @@ def update_product(product, job_timestamp):
 			category = '%s',
 			adilas_import_timestamp = '%s',
 			adilas_active = True,
-			adilas_import_error = False
-		WHERE
+			adilas_import_error = False,
 			upc = '%s'	
 		""" % (
+			unescape(product["UOMINITIALS"]),
+			unescape(product["PARTDESCRIPTION"]),
+			product["PARTSALEPRICE"],
+			product["PARTCOST"],
+			str(product["VENDORPAYEEID"]),
+			unescape(product["PARTNUMBER"]),
+			unescape(product["PARTCATEGORYNAME"]),
+			job_timestamp,
 			unescape(product["UOMINITIALS"]),
 			unescape(product["PARTDESCRIPTION"]),
 			product["PARTSALEPRICE"],
