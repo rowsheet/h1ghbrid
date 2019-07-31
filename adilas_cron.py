@@ -100,6 +100,8 @@ def update_product(product, job_timestamp):
 			vendor,
 			inventory,
 
+			upc,
+
 			uofm,
 			description,
 			price,
@@ -116,6 +118,8 @@ def update_product(product, job_timestamp):
 			False,
 			'Unknown',
 			0,
+
+			'%s',
 
 			'%s',
 			'%s',
@@ -141,6 +145,7 @@ def update_product(product, job_timestamp):
 			adilas_import_error = False,
 			upc = '%s'	
 		""" % (
+			str(product["PARTID"]),
 			unescape(product["UOMINITIALS"]),
 			unescape(product["PARTDESCRIPTION"]),
 			product["PARTSALEPRICE"],
